@@ -1,0 +1,7 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true,
+    "python.formatting.provider": "autopep8",
+    "python.pythonPath": "C:\\Users\\jomon\\.virtualenvs\\SQLAlchemy-_P4StdcH\\Scripts\\python.exe"
+}
