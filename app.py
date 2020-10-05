@@ -4,9 +4,11 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
+from ma import ma
 from db import db
-
 from resources.user import UserRegister, UserLogin, UserLogout, User, TokenRefresh
+from resources.item import Item, ItemList
+from resources.store import Store, StoreList
 from blacklist import BLACKLIST
 
 app = Flask(__name__)
@@ -28,8 +30,6 @@ def create_tables():
     db.create_all()
 
 
-db.init_app(app)
-
 jwt = JWTManager(app)
 
 
@@ -39,11 +39,22 @@ def token_in_blacklist_callback(decrypted_token):
     # if true it will go to the revoked loader
 
 
+# Users
 api.add_resource(UserLogin, "/login")
 api.add_resource(UserLogout, "/logout")
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(TokenRefresh, "/refresh")
 
+# Items
+api.add_resource(Item, "/item/<string:name>")
+api.add_resource(ItemList, "/items")
+
+# Stores
+api.add_resource(Store, "/store/<string:name>")
+api.add_resource(StoreList, "/stores")
+
 if __name__ == "__main__":
+    db.init_app(app)
+    ma.init_app(app)
     app.run(port=5000, debug=True)

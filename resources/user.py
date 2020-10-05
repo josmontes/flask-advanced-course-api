@@ -29,43 +29,17 @@ class UserRegister(Resource):
     @classmethod
     def post(cls):
         try:
-            data = user_schema.load(request.get_json())
+            user = user_schema.load(request.get_json())
         except ValidationError as error:
             return error.messages, 404
-        if UserModel.find_by_username(data["username"]):
-            return {"message": ALREADY_EXISTS.format(data["username"])}, 400
+        if UserModel.find_by_username(user.username):
+            return {"message": ALREADY_EXISTS.format(user.username)}, 400
 
-        user = UserModel(**data)
         try:
             user.save_to_db()
             return {"message": USER_SUCCESS.format("created")}, 201
         except:
             return {"message": ERROR_WITH_DB.format("inserting")}, 500
-
-
-class UserLogin(Resource):
-    @classmethod
-    def post(cls):
-        try:
-            data = user_schema.load(request.get_json())
-        except ValidationError as error:
-            return error.messages, 404
-        user = UserModel.find_by_username(data["username"])
-        if user and safe_str_cmp(user.password, data["password"]):
-            access_token = create_access_token(identity=user.id, fresh=True)
-            refresh_token = create_refresh_token(user.id)
-            return {"access_token": access_token, "refresh_token": refresh_token}, 200
-        return {"message": INVALID_CREDENTIALS}, 401
-
-
-class UserLogout(Resource):
-    @classmethod
-    @jwt_required
-    def post(cls):
-        # jti is "JWT ID" unique identifier for a JWT
-        jti = get_raw_jwt()["jti"]
-        BLACKLIST.add(jti)
-        return {"message": USER_SUCCESS.format("logged out")}, 200
 
 
 class User(Resource):
@@ -83,6 +57,31 @@ class User(Resource):
             return {"message": NOT_FOUND}, 404
         user.delete_from_db()
         return {"message": USER_SUCCESS.format("deleted")}, 200
+
+
+class UserLogin(Resource):
+    @classmethod
+    def post(cls):
+        try:
+            login_user = user_schema.load(request.get_json())
+        except ValidationError as error:
+            return error.messages, 404
+        user = UserModel.find_by_username(login_user.username)
+        if user and safe_str_cmp(user.password, login_user.password):
+            access_token = create_access_token(identity=user.id, fresh=True)
+            refresh_token = create_refresh_token(user.id)
+            return {"access_token": access_token, "refresh_token": refresh_token}, 200
+        return {"message": INVALID_CREDENTIALS}, 401
+
+
+class UserLogout(Resource):
+    @classmethod
+    @jwt_required
+    def post(cls):
+        # jti is "JWT ID" unique identifier for a JWT
+        jti = get_raw_jwt()["jti"]
+        BLACKLIST.add(jti)
+        return {"message": USER_SUCCESS.format("logged out")}, 200
 
 
 class TokenRefresh(Resource):
