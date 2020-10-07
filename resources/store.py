@@ -4,7 +4,7 @@ from schemas.store import StoreSchema
 
 # strings as constants
 CANNOT_BE_EMPTY = "{} cannot be empty."
-NOT_FOUND = "Store not found."
+ITEM_NOT_FOUND = "Store not found."
 ALREADY_EXISTS = "{} already exists."
 ERROR_WITH_DB = "An error ocurred while {} store."
 STORE_DELETED = "Store deleted successfully."
@@ -19,7 +19,7 @@ class Store(Resource):
         store = StoreModel.find_by_name(name)
         if store:
             return store_schema.dump(store)
-        return {"message": NOT_FOUND}, 404
+        return {"message": ITEM_NOT_FOUND}, 404
 
     @classmethod
     def post(cls, name: str):
@@ -41,7 +41,7 @@ class Store(Resource):
             if store:
                 store.delete_from_db()
             else:
-                return {"message": NOT_FOUND}, 404
+                return {"message": ITEM_NOT_FOUND}, 404
         except:
             return {"message": ERROR_WITH_DB.format("deleting")}, 500
 

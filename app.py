@@ -3,10 +3,18 @@ import os
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from marshmallow import ValidationError
 
 from ma import ma
 from db import db
-from resources.user import UserRegister, UserLogin, UserLogout, User, TokenRefresh
+from resources.user import (
+    UserRegister,
+    UserLogin,
+    UserLogout,
+    User,
+    TokenRefresh,
+    UserConfirm
+)
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from blacklist import BLACKLIST
@@ -21,13 +29,18 @@ app.config["PROPAGATE_EXCEPTIONS"] = True
 app.config["JWT_BLACKLIST_ENABLED"] = True
 app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
 
-app.secret_key = "Jose"  # app.config["JWT_SECRET_KEY"]
+app.secret_key = os.environ.get("APP_SECRET_KEY")
 api = Api(app)
 
 
 @app.before_first_request
 def create_tables():
     db.create_all()
+
+
+@app.errorhandler(ValidationError)
+def marshmallow_validation_handler(err):
+    return jsonify(err.messages), 400
 
 
 jwt = JWTManager(app)
@@ -43,6 +56,7 @@ def token_in_blacklist_callback(decrypted_token):
 api.add_resource(UserLogin, "/login")
 api.add_resource(UserLogout, "/logout")
 api.add_resource(UserRegister, "/register")
+api.add_resource(UserConfirm, "/confirm/<int:user_id>")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(TokenRefresh, "/refresh")
 

@@ -1,4 +1,4 @@
-from flask_restful import Resource,
+from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required, fresh_jwt_required
 from marshmallow import ValidationError
@@ -7,7 +7,7 @@ from schemas.item import ItemSchema
 
 # strings as constants
 CANNOT_BE_EMPTY = "{} cannot be empty."
-NOT_FOUND = "Item not found."
+ITEM_NOT_FOUND = "Item not found."
 ALREADY_EXISTS = "{} already exists."
 ERROR_WITH_DB = "An error ocurred while {} item."
 ITEM_DELETED = "Item deleted successfully."
@@ -22,7 +22,7 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
         if item:
             return item_schema.dump(item)
-        return {"message": NOT_FOUND}, 404
+        return {"message": ITEM_NOT_FOUND}, 404
 
     @classmethod
     @fresh_jwt_required
@@ -32,11 +32,8 @@ class Item(Resource):
 
         item_json = request.get_json()
         item_json["name"] = name
-        try:
-            item = item_schema.load(item_json)
-        except ValidationError as error:
-            return error.messages, 400
-
+        item = item_schema.load(item_json)
+       
         try:
             item.save_to_db()
         except:
@@ -52,7 +49,7 @@ class Item(Resource):
             if item:
                 item.delete_from_db()
             else:
-                return {"message": NOT_FOUND}, 404
+                return {"message": ITEM_NOT_FOUND}, 404
         except:
             return {"message": ERROR_WITH_DB.format("deleting")}, 500
 
@@ -68,10 +65,7 @@ class Item(Resource):
                 item.price = item_json["price"]
             else:
                 item_json["name"] = name
-                try:
-                    item = item_schema.load(item_json)
-                except ValidationError as error:
-                    return error.messages, 400
+                item = item_schema.load(item_json)
 
             item.save_to_db()
         except:
