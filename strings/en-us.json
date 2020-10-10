@@ -1,0 +1,46 @@
+{
+    "mailgun_api_key_error": "Failed to load Mailgun API key.",
+    "mailgun_domain_error": "Failed to load Mailgun Domain.",
+    "mailgun_email_error": "Error sending confirmation email.",
+
+    "confirmation_not_found": "Confirmation reference not found.",
+    "confirmation_expired": "The link has expried.",
+    "confirmation_already_confirmed": "Registration has already been confirmed.",
+    "confirmation_resend_success": "We have sent another confirmation email.",
+    "confirmation_resend_error": "There was an error resending the confirmation email.",
+
+    "cannot_be_empty": "{} cannot be empty.",
+
+    "item_not_found": "Item not found.",
+    "item_already_exists": "{} already exists.",
+    "item_db_saving_error": "An error ocurred while saving the item.",
+    "item_fb_deleting_error": "An error ocurred while deleting the item.",
+    "item_deleted": "Item deleted successfully.",
+
+    "store_not_found": "Store not found.",
+    "store_already_exists": "{} already exists.",
+    "store_db_saving_error": "An error ocurred while saving the store.",
+    "store_db_deleting_error": "An error ocurred while deleting the store.",
+    "store_deleted": "Store deleted successfully.",
+
+    "user_not_found": "User not found.",
+    "user_already_exists": "{} already exists.",
+    "user_db_saving_error": "An error ocurred while saving the item.",
+    "user_db_deleting_error": "An error ocurred while deleting the item.",
+    "user_deleted": "User deleted successfully.",
+    "user_register_success": "Account created, please confirm by checking your email.",
+    "user_invalid_credentials": "Invalid credentials.",
+    "user_logged_out": "User {} successfully logged out.",
+    "user_not_confirmed": "You have to confirm your email.",
+
+    "image_uploaded": "Image {} uploaded successfully",
+    "image_illegal_extension": "Extension {} is not allowed.",
+    "image_not_found": "Image was not found.",
+    "image_illlegal_filename": "Name not allowed.",
+    "image_deleted": "Image deleted successfully.",
+    "image_delete_error": "An error ocurred deleting the image.",
+
+    "avatar_delete_error": "An error ocurred deleting the avatar image.",
+    "avatar_uploaded": "Avatar image {} uploaded successfully",
+    "avatar_not_found": "Avatar was not found."
+}

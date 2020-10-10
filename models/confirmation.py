@@ -9,7 +9,7 @@ CONFIRMATION_EXPIRATION_DELTA = 1800  # 30 minutes
 class ConfirmationModel(db.Model):
     __tablename__ = "confirmations"
 
-    id = db.Column(db.String(50), primary_key-True)
+    id = db.Column(db.String(50), primary_key=True)
     expire_at = db.Column(db.Integer, nullable=False)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -27,7 +27,7 @@ class ConfirmationModel(db.Model):
 
     @property
     def expired(self) -> bool:
-        return time() > self.exprire_at
+        return time() > self.expire_at
 
     def force_to_expire(self):
         if not self.expired:

@@ -18,6 +18,8 @@ marshmallow-sqlalchemy = "*"
 flask-marshmallow = "*"
 requests = "*"
 python-dotenv = "*"
+flask-uploads = "*"
+werkzeug = "==0.16.0"
 
 [requires]
 python_version = "3.8"
