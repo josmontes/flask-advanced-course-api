@@ -20,6 +20,8 @@ requests = "*"
 python-dotenv = "*"
 flask-uploads = "*"
 werkzeug = "==0.16.0"
+psycopg2 = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.8"
